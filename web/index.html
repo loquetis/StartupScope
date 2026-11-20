@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="app-token" content="__APP_TOKEN__">
+  <title>StartupScope</title>
+  <link rel="icon" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="core.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="name">StartupScope</div><p class="subtitle">Startup manager</p></div>
+      <nav aria-label="Sections"><ul class="nav-list">
+        <li><button type="button" class="nav-btn active" data-view="items">Startup items <span class="count" id="n-items"></span></button></li>
+        <li><button type="button" class="nav-btn" data-view="changes">Changes &amp; undo <span class="count" id="n-changes"></span></button></li>
+        <li><button type="button" class="nav-btn" data-view="about">About &amp; safety</button></li>
+      </ul></nav>
+      <div class="side-status" id="side-status" role="status" aria-live="polite">
+        <div class="label">Status</div>
+        <div id="side-text" class="small muted">Starting…</div>
+      </div>
+      <div class="settings-block">
+        <label for="theme">Theme</label>
+        <select id="theme"><option value="dark">Dark</option><option value="light">Light</option><option value="green">Green</option><option value="amber">Amber</option><option value="blue">Blue</option><option value="mono">Mono</option></select>
+      </div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="topbar"><h1 id="view-title">Startup items</h1><div id="status" class="status" role="status" aria-live="polite"></div></header>
+      <section id="view" class="view">
+
+        <div id="v-items" class="stack">
+          <div id="banners" class="stack tight"></div>
+          <div id="cards" class="cards"></div>
+          <div class="toolbar">
+            <input type="search" id="q" class="wide grow" placeholder="Filter by name, publisher or command…" aria-label="Filter startup items" autocomplete="off" spellcheck="false" maxlength="200">
+            <label class="field inline"><span>Show</span>
+              <select id="f-kind"><option value="all">Everything</option><option value="run">Run keys</option><option value="folder">Startup folders</option><option value="task">Scheduled tasks</option><option value="service">Services</option></select></label>
+            <label class="field inline"><span>Sort</span>
+              <select id="f-sort"><option value="impact">Boot impact</option><option value="name">Name</option><option value="publisher">Publisher</option><option value="type">Type</option></select></label>
+            <label class="check"><input type="checkbox" id="f-win" checked> Hide Windows components</label>
+            <label class="check"><input type="checkbox" id="f-off"> Only disabled</label>
+            <button type="button" id="btn-refresh">Refresh</button>
+            <a class="button" id="btn-export" href="/api/export.csv" download>Export CSV</a>
+          </div>
+          <div class="panel table-panel">
+            <div class="table-wrap">
+              <table class="data" id="tbl">
+                <thead><tr><th class="c-sw">On</th><th class="c-name">Name</th><th class="c-pub">Publisher &amp; signature</th><th class="c-type">Type</th><th class="c-imp">Boot impact</th></tr></thead>
+                <tbody id="rows"></tbody>
+              </table>
+              <div id="empty" class="empty muted center" hidden></div>
+            </div>
+          </div>
+          <div id="detail" class="panel" hidden></div>
+          <p class="small muted" id="count"></p>
+        </div>
+
+        <div id="v-changes" class="stack" hidden>
+          <div class="panel">
+            <h2>Changes made with StartupScope</h2>
+            <p class="small muted">Every change is backed up before it is made. Undo puts the original setting back. Backup files (readable JSON) are in <code id="backup-dir"></code>.</p>
+            <div class="table-wrap"><table class="data"><thead><tr><th>When</th><th>Item</th><th>Change</th><th>Where</th><th></th></tr></thead><tbody id="chg-rows"></tbody></table>
+            <div id="chg-empty" class="empty muted center">No changes yet.</div></div>
+          </div>
+        </div>
+
+        <div id="v-about" class="stack" hidden>
+          <div class="panel">
+            <h2>What this shows</h2>
+            <p>Run keys (HKCU and HKLM), the two Startup folders, scheduled tasks that start at log on or at boot, and services set to start automatically. It reads them without administrator rights.</p>
+            <h2>How disabling works</h2>
+            <ul class="plain">
+              <li><b>Run keys and Startup folders:</b> the same <code>StartupApproved</code> setting Task Manager uses. Nothing is deleted; the program, shortcut or registry value stays exactly where it is.</li>
+              <li><b>Scheduled tasks:</b> the task is switched off in Task Scheduler and can be switched back on. Windows' own tasks are protected.</li>
+              <li><b>Services:</b> set to Manual (not Disabled), so anything that needs the service can still start it. Windows' own services are protected. Needs administrator rights.</li>
+              <li>Every change writes a backup file first and appears under “Changes &amp; undo”.</li>
+            </ul>
+            <h2>Boot impact</h2>
+            <p id="about-impact" class="muted"></p>
+            <h2>Not covered</h2>
+            <p class="muted">Winlogon, shell extensions, browser extensions, drivers and other less common start-up points are not listed. Programs can also start themselves in other ways.</p>
+            <p class="small muted">StartupScope 1.0.0. It only listens on your own PC (127.0.0.1) and sends nothing anywhere. Settings and backups: <code id="data-dir"></code></p>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+  <div id="modal-root"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

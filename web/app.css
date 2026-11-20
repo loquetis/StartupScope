@@ -1,0 +1,30 @@
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.stack.tight { gap: 8px; }
+.stack[hidden] { display: none; }
+.field.inline { flex-direction: row; align-items: center; gap: 6px; }
+ul.plain { margin: 6px 0 12px; padding-left: 18px; display: grid; gap: 6px; }
+.table-panel { padding: 0; }
+.table-wrap { position: relative; max-height: calc(100vh - 430px); min-height: 160px; overflow: auto; }
+table.data { table-layout: fixed; }
+table.data th, table.data td { overflow: hidden; }
+.c-sw { width: 80px; } .c-pub { width: 25%; } .c-type { width: 12%; } .c-imp { width: 15%; min-width: 118px; }
+table.data tbody tr { cursor: default; }
+.nm { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cmd { font-family: Consolas, "Cascadia Mono", monospace; font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pub { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sigline { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
+tr.off .nm, tr.off .cmd { opacity: 0.55; text-decoration: line-through; text-decoration-thickness: 1px; }
+.switch { position: relative; width: 38px; height: 22px; padding: 0; border-radius: 999px; border: 1px solid var(--border); background: var(--panel-2); cursor: pointer; }
+.switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--muted); transition: left 0.12s; }
+.switch[aria-checked="true"] { background: var(--accent); border-color: var(--accent); }
+.switch[aria-checked="true"]::after { left: 18px; background: #fff; }
+.switch:disabled { opacity: 0.4; cursor: not-allowed; }
+.lock { font-size: 10px; font-weight: 600; letter-spacing: 0.04em; padding: 2px 6px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); cursor: help; }
+.imp-High { color: var(--danger); font-weight: 600; } .imp-Medium { color: var(--warn); font-weight: 600; } .imp-Low { color: var(--ok); } .imp-na { color: var(--muted); }
+#detail h2 { margin: 0 0 8px; }
+#detail .deflist { margin-top: 8px; }
+.actions-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.side-status { display: grid; gap: 6px; }
+.side-status .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; }
+.empty { padding: 36px 12px; }
+tr.sel { background: var(--panel-2); }
